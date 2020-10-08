@@ -18,14 +18,12 @@ import java.util.ArrayList;
 public class SGAsyncTask extends AsyncTask<Void, Void, Void> {
     public static final String NAVER_SITE = "N";
     public static final String GOOGLE_SITE = "G";
-    public static final String YOUTUBE_SITE = "Y";
-    private static final int FROM_WIDGET = 0;
     private static final int FROM_APPLICATION = 1;
 
     private Context taskContext;
     String taskSite;
     private int fromWhere;
-    private ArrayList<SGSearch> naverArr, googleArr, youtubeArr;
+    private ArrayList<SGSearch> naverArr, googleArr;
     private AsyncTaskCallBack callBack;
 
     public SGAsyncTask(Context context, ArrayList<SGSearch> arr, String site, AsyncTaskCallBack callBack) {
@@ -35,7 +33,6 @@ public class SGAsyncTask extends AsyncTask<Void, Void, Void> {
         this.fromWhere = FROM_APPLICATION;
         this.naverArr = taskSite.equalsIgnoreCase(NAVER_SITE) ? arr : null;
         this.googleArr = taskSite.equalsIgnoreCase(GOOGLE_SITE) ? arr : null;
-        this.youtubeArr = taskSite.equalsIgnoreCase(YOUTUBE_SITE) ? arr : null;
         this.callBack = callBack;
     }
 
@@ -53,7 +50,6 @@ public class SGAsyncTask extends AsyncTask<Void, Void, Void> {
             } else {
                 getRealRank(NAVER_SITE);
                 getRealRank(GOOGLE_SITE);
-                getRealRank(YOUTUBE_SITE);
             }
         }
         return null;
