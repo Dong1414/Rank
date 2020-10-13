@@ -4,10 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-    <com.baoyz.widget.PullRefreshLayout
-        android:id="@+id/googleRefresh"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -25,13 +22,23 @@
             android:contentDescription="@string/app_name"
             />
     </LinearLayout>
-    <LinearLayout
+    <SearchView
+        android:id="@+id/search_view"
+        android:layout_width="325dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:iconifiedByDefault="false"
+        android:queryHint="검색어를 입력하세요" />
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="130dp"
         >
-
+        <com.baoyz.widget.PullRefreshLayout
+            android:id="@+id/googleRefresh"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
         <ListView
             android:id="@+id/google_list"
             android:layout_width="match_parent"
@@ -39,8 +46,8 @@
             android:dividerHeight="10dp"
             android:divider="#ffffff"
             />
-
-    </LinearLayout>
+        </com.baoyz.widget.PullRefreshLayout>
+    </RelativeLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

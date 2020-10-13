@@ -65,13 +65,16 @@ public class YouAsyncTask extends AsyncTask<Void, Void, Void> {
         if (YOUTUBE_SITE.equalsIgnoreCase(whatSite)) {
             youArr.clear();
             try {
-                Document document = Jsoup.connect("https://datalab.naver.com/keyword/realtimeList.naver?where=main").get();
+                Document document = Jsoup.connect("https://www.youtube.com/feed/trending").ignoreContentType(true).timeout(15000).get();
+                System.out.println(document);
+                //System.out.println(document.getAllElements());
                 if (document != null) {
-                    Elements elements = document.select("div.item_box");
+                    Elements elements = document.select("div.dismissable");
                     for (Element element : elements) {
                         item = new YouSearch();
-                        item.setTotal(element.select("span.item_num").text() + ". ");
-                        item.setTitle(element.select("span.item_num").text());
+                        item.setTotal(element.select("div.byline-container").text() + ". ");
+                        //item.setTitle(element.select("a.title-wrapper").text());
+                        item.setTitle("가나다라마바사");
                         item.setUrl("\"https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query="
                                 + item.getTitle());
                         String id = item.getUrl().substring(item.getUrl().lastIndexOf("=") + 1);

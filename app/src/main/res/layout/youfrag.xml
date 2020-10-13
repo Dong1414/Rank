@@ -5,10 +5,7 @@
     android:orientation="vertical"
     >
 
-    <com.baoyz.widget.PullRefreshLayout
-        android:id="@+id/youRefresh"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
+
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -27,6 +24,10 @@
             android:contentDescription="@string/app_name"
             />
     </LinearLayout>
+    <com.baoyz.widget.PullRefreshLayout
+        android:id="@+id/youRefresh"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,8 +41,9 @@
             android:dividerHeight="10dp"
             android:divider="#ffffff"
             />
-
     </LinearLayout>
+    </com.baoyz.widget.PullRefreshLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

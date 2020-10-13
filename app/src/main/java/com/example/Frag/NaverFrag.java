@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +21,7 @@ import com.baoyz.widget.PullRefreshLayout;
 import com.example.Adapter.SRListAdapter;
 import com.example.NetWork.AsyncTaskCallBack;
 import com.example.NetWork.SGAsyncTask;
+import com.example.rank.MainActivity;
 import com.example.rank.R;
 import com.example.rank.SGSearch;
 
@@ -27,9 +30,8 @@ import java.util.ArrayList;
 public class NaverFrag extends Fragment implements AdapterView.OnItemClickListener{
 
     private final SRListAdapter naverAdapter = new SRListAdapter();
-    private final SRListAdapter naverAdapter2 = new SRListAdapter();
     private ListView listView;
-    private ListView listView2;
+    private SearchView search_view ;
     private ProgressDialog dialog;
     private TextView empty;
     private PullRefreshLayout naverRefresh;
@@ -41,17 +43,30 @@ public class NaverFrag extends Fragment implements AdapterView.OnItemClickListen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.naverfrag, container, false);
-
+        search_view = rootView.findViewById(R.id.search_view);
         empty = rootView.findViewById(R.id.empty);
-        listView = rootView.findViewById(R.id.naver_list10);
+        listView = rootView.findViewById(R.id.naver_list);
         listView.setAdapter(naverAdapter);
         listView.setOnItemClickListener(this);
         listView.setEmptyView(empty);
 
-        listView2 = rootView.findViewById(R.id.naver_list20);
-        listView2.setAdapter(naverAdapter2);
-        listView2.setOnItemClickListener(this);
-        listView2.setEmptyView(empty);
+
+        search_view.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+//입력받은 문자열 처리
+                Intent browerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + query));
+                startActivity((browerIntent));
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+//입련란의 문자열이 바뀔 때 처리
+
+                return false;
+            }
+        });
 
         naverRefresh = rootView.findViewById(R.id.naverRefresh);
         naverRefresh.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
@@ -91,46 +106,26 @@ public class NaverFrag extends Fragment implements AdapterView.OnItemClickListen
         }).execute();
     }
 
+
+
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if(parent == listView) {
             SGSearch item = (SGSearch) listView.getItemAtPosition(position);
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()));
             startActivity(intent);
-            final ArrayList<SGSearch> arr = new ArrayList<>();
-            new SGAsyncTask(getContext(), arr, SGAsyncTask.NAVER_SITE, new AsyncTaskCallBack() {
-                @Override
-                public void onSuccess() {
-                    doOnSuccess(arr);
-                }
-            }).execute();
         }
 
-        if(parent == listView2) {
-            SGSearch item = (SGSearch) listView2.getItemAtPosition(position);
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()));
-            startActivity(intent);
-            final ArrayList<SGSearch> arr = new ArrayList<>();
-            new SGAsyncTask(getContext(), arr, SGAsyncTask.NAVER_SITE, new AsyncTaskCallBack() {
-                @Override
-                public void onSuccess() {
-                    doOnSuccess(arr);
-                }
-            }).execute();
-        }
     }
 
     private void doOnSuccess(ArrayList<SGSearch> arr) {
         if (arr.size() > 0) {
             naverAdapter.getListItemList().clear();
-            naverAdapter2.getListItemList().clear();
-            for (int i = 0; i < 10; i++) {
+
+            for (int i = 0; i < arr.size(); i++) {
                 naverAdapter.addItem(arr.get(i));
             }
-            for (int i = 10; i < 20; i++) {
-                naverAdapter2.addItem(arr.get(i));
-            }
             naverAdapter.notifyDataSetChanged();
-            naverAdapter2.notifyDataSetChanged();
+
         }
         if (dialog.isShowing()) {
             dialog.dismiss();
